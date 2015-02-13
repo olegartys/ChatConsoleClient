@@ -13,13 +13,20 @@ public class ServerUser implements Serializable {
     private Socket sock;
     private ObjectInputStream is;
     private ObjectOutputStream os;
-    private String login;
+    protected String login;
     private Integer num;
 
     private static final ObjectStreamField[] serialPersistentFields = {new ObjectStreamField("login", String.class),
             new ObjectStreamField("num", Integer.class)};
 
-    public ServerUser (Socket clientSock, int num) {sock = clientSock; this.num = num;}
+    public ServerUser () {
+
+    }
+
+    public ServerUser (Socket clientSock, int num) {
+        sock = clientSock;
+        this.num = num;
+    }
 
     public ServerUser (Socket clientSock, ObjectInputStream is, ObjectOutputStream os,
                        String login, int num) {
@@ -30,34 +37,52 @@ public class ServerUser implements Serializable {
         this.num = num;
     }
 
-    public ServerUser (String login) {this.login = login;}
+    public ServerUser (String login) {
+        this.login = login;
+    }
 
-    public ServerUser (Socket clientSock, String login) {
+    /*public ServerUser (Socket clientSock, String login) {
         this.sock = clientSock;
         try {
             this.is = new ObjectInputStream(sock.getInputStream());
             this.os = new ObjectOutputStream(sock.getOutputStream());
         } catch (IOException e) {
-            System.err.println ("IO error");
+            Server.sendServerErrMessage("IO error");
         }
+        this.login = login;
+    }*/
+
+    public Socket getUserSocket () {
+        return this.sock;
+    }
+
+    public ObjectInputStream getUserInputStream () {
+        return this.is;
+    }
+
+    public ObjectOutputStream getUserOutputStream () {
+        return this.os;
+    }
+
+    public String getLogin () {
+        return this.login;
+    }
+
+    public void setInputStream (ObjectInputStream is) {
+        this.is = is;
+    }
+
+    public void setOutputStream (ObjectOutputStream os) {
+        this.os = os;
+    }
+
+    public void setLogin (String login) {
         this.login = login;
     }
 
-    public Socket getUserSocket () {return this.sock;}
-
-    public ObjectInputStream getUserInputStream () {return this.is;}
-
-    public ObjectOutputStream getUserOutputStream () {return this.os;}
-
-    public String getLogin () {return this.login;}
-
-    public void setInputStream (ObjectInputStream is) {this.is = is;}
-
-    public void setOutputStream (ObjectOutputStream os) {this.os = os;}
-
-    public void setLogin (String login) {this.login = login;}
-
-    public int getNum () {return this.num;}
+    public int getNum () {
+        return this.num;
+    }
 
 }
 
